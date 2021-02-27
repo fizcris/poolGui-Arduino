@@ -1,6 +1,6 @@
 bool emergence(){
-
-}
+    return  0;
+};
 
 void scenario_STOP()
 {
