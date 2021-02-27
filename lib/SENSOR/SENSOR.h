@@ -33,4 +33,5 @@ public:
   void read();
   float printValue(int mode=0);
   String print(int mode=0);
+  int printValueIntx10 (int mode=0);
 }; // don't forget the semicolon at the end of the class

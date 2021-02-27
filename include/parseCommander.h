@@ -59,9 +59,9 @@
 /*************************************************************************************************************************************************/
 void parseSerialCommand(){
 
-    if(Serial2.available() > 0)
+    if(Serial.available() > 0)
     {
-        byte receivedByte = (byte)Serial2.read();
+        byte receivedByte = (byte)Serial.read();
         //Serial.println(receivedByte);
         if(receivedByte == FRAME_ESCAPE_CHAR)
         {
@@ -133,42 +133,51 @@ void parseSerialCommand(){
                         {
                             case CMD_STATE_STOP:
                             {
+                                serialWD.reset();
                                 scenario_STOP();                                
                             } break;
 
                             case CMD_STATE_POOL:
                             {
+                                 serialWD.reset();
                                  scenario_pool();                                
                             } break;
 
                             case CMD_STATE_FLOOR:
                             {
+                                serialWD.reset();
                                 scenario_floor();
                             } break; 
 
                             case CMD_STATE_HOT_SERIES:
                             {   
+                                serialWD.reset();
                                 scenario_hot_series();
                             } break; 
                             case CMD_STATE_HOT_PARALELL:
                             {   
+                                serialWD.reset();
                                 scenario_hot_paralell();
                             } break; 
                             case CMD_STATE_COLD_SERIES:
                             {
+                                serialWD.reset();
                                 scenario_cold_series();
                             } break; 
                             case CMD_STATE_COLD_PARALELL:
                             {
+                                serialWD.reset();
                                 scenario_cold_paralell();
                             } break; 
                             case CMD_TEMP_POOL:
                             {
+                                serialWD.reset();
                                 desiredTempPool =  GetDataWord(g_InputBuffer);
                                 Serial.println(desiredTempPool);
                             }break; 
                             case CMD_TEMP_FLOOR:
                             {
+                                serialWD.reset();
                                 desiredTempFloor = GetDataWord(g_InputBuffer);
                                 Serial.println(desiredTempFloor);
                             }break; 
