@@ -64,6 +64,7 @@ void setup()
     Serial.begin(115200);
     delay(100);
 
+    //Debug
     Serial3.begin(115200);    
     delay(100);
 
@@ -105,12 +106,7 @@ void setup()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop() 
 {
-    parseSerialCommand();
-
-
-    
-
-
+    parseSerialCommand(); //Read and parse incomin data
     if(periodicUpdate.update())    //Checks to see if set time has past 
 {       
         // Update sensor values

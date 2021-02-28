@@ -64,7 +64,6 @@ float Sensor::printValue(int mode)
 {
     if (this->sensorType == "DS18B20")
     {
-        Serial3.println(sensorid->getTempCByIndex(0));
         return (sensorid->getTempCByIndex(0));
     }
     if (this->sensorType == "DHT22")
@@ -96,7 +95,6 @@ String Sensor::print(int mode)
 
 int Sensor::printValueIntx10 (int mode) {
 
-    Serial3.println((int) (printValue(mode) *10));
     return  (int) (printValue(mode) *10);
 
 }
