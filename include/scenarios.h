@@ -18,64 +18,63 @@ void scenario_STOP()
 
 void scenario_pool()
 {
-    desiredState = 10; //DEGUB
+    desiredState = 10; 
+    int _curentTempPool = sensor2->printValueIntx10();
+    int _curentTempPoolImp = sensor3->printValueIntx10();
     //Enable outputs
     actuator8->on();
     // //Valves
-    actuator1->off();
-    actuator2->off();
-    actuator3->off();
-    actuator4->off();
-    // Desactivo motor suelo
-    actuator6->off();
-    // Control
-    // if (desiredTempPool > )
-    // Activo motor piscina
-    actuator5->on();
-    // Activo motor intercambiador
-    actuator7->on();
+    actuator1->off(); //vk1
+    actuator2->off(); //vk2
+    actuator3->off(); //vk3
+    actuator4->off(); //vk4
+    actuator6->off(); // Motor suelo
+    
+    if (_curentTempPoolImp > alarmHighTempImp) {
+        actuator5->on();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+    } else {
+    if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
+        { 
+        actuator5->off();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+        }
+    if (_curentTempPool < (desiredTempPool - hysteresisTemp/2)) {
+        actuator5->on(); // Motor piscina
+        actuator7->on();// Motor intercambiador
+    }
+    }
 };
 
 void scenario_floor()
 {
-    desiredState = 20; //DEGUB
+    desiredState = 20; 
+    int _curentTempFloor = sensor9->printValueIntx10();
     //Enable outputs
     actuator8->on();
     // //Valves
-    actuator1->on();
-    actuator2->off();
-    actuator3->on();
-    actuator4->off();
+    actuator1->on();    //vk1
+    actuator2->off();   //vk2
+    actuator3->on();    //vk3
+    actuator4->off();   //vk4
+    actuator5->off();   // Motor piscina
+    actuator7->off();   // Motor intercambiador
 
-    // Desactivo motor piscina
-    actuator5->off();
-    // Desactivo motor intercambiador
-    actuator7->off();
-    // Activo motor suelo
-    actuator6->on();
-};
+    if (_curentTempFloor > (desiredTempFloor + hysteresisTemp/2) ) 
+        { 
+        actuator6->off();   // Motor suelo
 
-void scenario_hot_paralell()
-{
-    desiredState = 30; //DEGUB
-    //Enable outputs
-    actuator8->on();
-    // //Valves
-    actuator1->off();
-    actuator2->off();
-    actuator3->on();
-    actuator4->off();
-    // Activo motor piscina
-    actuator5->on();
-    // Activo motor intercambiador
-    actuator7->on();
-    // Activo motor suelo
-    actuator6->on();
+        }
+    if (_curentTempFloor < (desiredTempFloor - hysteresisTemp/2)) {
+        actuator6->on(); // Motor suelo
+    }
 };
 
 void scenario_hot_series()
 {
-    desiredState = 40; //DEGUB
+    desiredState = 30;
+    int _curentTempPool = sensor2->printValueIntx10();
+    int _curentTempPoolImp = sensor3->printValueIntx10();
     //Enable outputs
     actuator8->on();
     // //Valves
@@ -83,17 +82,104 @@ void scenario_hot_series()
     actuator2->on();
     actuator3->on();
     actuator4->off();
-    // Activo motor piscina
-    actuator5->on();
-    // Activo motor intercambiador
-    actuator7->on();
-    // Activo motor suelo
-    actuator6->on();
+    //Motores
+    if (_curentTempPoolImp > alarmHighTempImp) {
+        actuator5->on();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+        actuator6->off();   // Motor suelo
+    } else {
+    if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
+        { 
+        actuator5->off();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+        actuator6->off();   // Motor suelo
+        }
+    if (_curentTempPool < (desiredTempPool - hysteresisTemp/2)) {
+        actuator5->on(); // Motor piscina
+        actuator7->on();// Motor intercambiador
+        actuator6->on();   // Motor suelo
+    }
+    }
+};
+
+void scenario_hot_paralell()
+{
+    desiredState = 40;
+    int _curentTempPool = sensor2->printValueIntx10();
+    int _curentTempPoolImp = sensor3->printValueIntx10();
+    int _curentTempFloor = sensor9->printValueIntx10();
+    //Enable outputs
+    actuator8->on();
+    // //Valves
+    actuator1->off();   //vk1
+    actuator2->off();   //vk2
+    actuator3->on();    //vk3
+    actuator4->off();   //vk4
+    // Piscina
+    if (_curentTempPoolImp > alarmHighTempImp) {
+        actuator5->on();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+    } else {
+    if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
+        { 
+        actuator5->off();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+
+        }
+    if (_curentTempPool < (desiredTempPool - hysteresisTemp/2)) {
+        actuator5->on(); // Motor piscina
+        actuator7->on();// Motor intercambiador
+    }
+    }
+    // Suelo
+    if (_curentTempFloor > (desiredTempFloor + hysteresisTemp/2) ) 
+        { 
+        actuator6->off();   // Motor suelo
+
+        }
+    if (_curentTempFloor < (desiredTempFloor - hysteresisTemp/2)) {
+        actuator6->on(); // Motor suelo
+    }
+};
+
+void scenario_cold_series()
+{
+    desiredState = 50; 
+    int _curentTempFloor = sensor9->printValueIntx10();
+    int _curentTempPoolImp = sensor3->printValueIntx10();
+    //Enable outputs
+    actuator8->on();
+    //Valves
+    actuator1->off();   //vk1
+    actuator2->on();    //vk2
+    actuator3->off();   //vk3
+    actuator4->on();    //vk4
+
+     if (_curentTempPoolImp > alarmHighTempImp) {
+        actuator5->on();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+        actuator6->off();   // Motor suelo
+    } else {
+    if (_curentTempFloor > (desiredTempFloor - hysteresisTemp/2) ) 
+        { 
+        actuator5->on();   // Motor piscina
+        actuator7->on();   // Motor intercambiador
+        actuator6->on();   // Motor suelo
+
+        }
+    if (_curentTempFloor < (desiredTempFloor + hysteresisTemp/2)) {
+        actuator5->off();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+        actuator6->off();   // Motor suelo
+    }
+    }
 };
 
 void scenario_cold_paralell()
 {
-    desiredState = 50; //DEGUB
+    desiredState = 60; 
+    int _curentTempPoolImp = sensor3->printValueIntx10();
+    int _curentTempFloor = sensor9->printValueIntx10();
     //Enable outputs
     actuator8->on();
     // //Valves
@@ -101,31 +187,29 @@ void scenario_cold_paralell()
     actuator2->off();
     actuator3->on();
     actuator4->on();
-    // Activo motor piscina
-    actuator5->on();
-    // Activo motor intercambiador
-    actuator7->on();
-    // Activo motor suelo
-    actuator6->on();
+    //Motors
+     if (_curentTempPoolImp > alarmHighTempImp) {
+        actuator5->on();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+        actuator6->off();   // Motor suelo
+    } else {
+    if (_curentTempFloor > (desiredTempFloor - hysteresisTemp/2) ) 
+        { 
+        actuator5->on();   // Motor piscina
+        actuator7->on();   // Motor intercambiador
+        actuator6->on();   // Motor suelo
+
+        }
+    if (_curentTempFloor < (desiredTempFloor + hysteresisTemp/2)) {
+        actuator5->off();   // Motor piscina
+        actuator7->off();   // Motor intercambiador
+        actuator6->off();   // Motor suelo
+    }
+    }
+
 };
 
-void scenario_cold_series()
-{
-    desiredState = 60; //DEGUB
-    //Enable outputs
-    actuator8->on();
-    //Valves
-    actuator1->off();
-    actuator2->on();
-    actuator3->off();
-    actuator4->on();
-    // Activo motor piscina
-    actuator5->on();
-    // Activo motor intercambiador
-    actuator7->on();
-    // Activo motor suelo
-    actuator6->on();
-};
+
 
 bool testEmergence(){
     if(sensor1->printValueIntx10() > alarmHighTemp)
@@ -157,19 +241,20 @@ void updateScenario(int desiredState){
         break;
     case 30:
         if (testEmergence()) {break;};
-        scenario_hot_paralell();
+        scenario_hot_series();
         break;
     case 40:
         if (testEmergence()) {break;};
-        scenario_hot_series();
+        scenario_hot_paralell();
         break;
     case 50:
         if (testEmergence()) {break;};
-        scenario_cold_paralell();
+        scenario_cold_series();
         break;
     case 60:
         if (testEmergence()) {break;};
-        scenario_cold_series();
+        scenario_cold_paralell();
+        
         break;   
     default:
         scenario_STOP();
