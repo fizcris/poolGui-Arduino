@@ -1,10 +1,8 @@
-bool testEmergence(){
-    return  0;
-};
-
 void scenario_STOP()
 {
-    desiredState = 0; //DEGUB
+    desiredState = 0;
+    //Enable outputs
+    actuator8->off(); 
     // //Valves
     actuator1->off();
     actuator2->off();
@@ -21,6 +19,8 @@ void scenario_STOP()
 void scenario_pool()
 {
     desiredState = 10; //DEGUB
+    //Enable outputs
+    actuator8->on();
     // //Valves
     actuator1->off();
     actuator2->off();
@@ -39,11 +39,14 @@ void scenario_pool()
 void scenario_floor()
 {
     desiredState = 20; //DEGUB
+    //Enable outputs
+    actuator8->on();
     // //Valves
     actuator1->on();
     actuator2->off();
     actuator3->on();
     actuator4->off();
+
     // Desactivo motor piscina
     actuator5->off();
     // Desactivo motor intercambiador
@@ -55,6 +58,8 @@ void scenario_floor()
 void scenario_hot_paralell()
 {
     desiredState = 30; //DEGUB
+    //Enable outputs
+    actuator8->on();
     // //Valves
     actuator1->off();
     actuator2->off();
@@ -71,6 +76,8 @@ void scenario_hot_paralell()
 void scenario_hot_series()
 {
     desiredState = 40; //DEGUB
+    //Enable outputs
+    actuator8->on();
     // //Valves
     actuator1->off();
     actuator2->on();
@@ -87,6 +94,8 @@ void scenario_hot_series()
 void scenario_cold_paralell()
 {
     desiredState = 50; //DEGUB
+    //Enable outputs
+    actuator8->on();
     // //Valves
     actuator1->off();
     actuator2->off();
@@ -103,6 +112,8 @@ void scenario_cold_paralell()
 void scenario_cold_series()
 {
     desiredState = 60; //DEGUB
+    //Enable outputs
+    actuator8->on();
     //Valves
     actuator1->off();
     actuator2->on();
@@ -116,31 +127,48 @@ void scenario_cold_series()
     actuator6->on();
 };
 
+bool testEmergence(){
+    if(sensor1->printValueIntx10() > alarmHighTemp)
+    {scenario_STOP(); return  1;}
+    if(sensor2->printValueIntx10() > alarmHighTemp)
+    {scenario_STOP(); return  1;}
+    if(sensor3->printValueIntx10() > alarmHighTemp)
+    {scenario_STOP(); return  1;}
+    if(sensor4->printValueIntx10() > alarmHighTemp)
+    {scenario_STOP(); return  1;}
+    if(sensor5->printValueIntx10() > alarmHighTemp)
+    {scenario_STOP(); return  1;}
+    if(sensor6->printValueIntx10() > alarmHighTemp)
+    {scenario_STOP(); return  1;}
+    //NO alarms
+    return  0;
+};
+
 void updateScenario(int desiredState){
     switch (desiredState)
     {
     case 10:
-        testEmergence();
+        if (testEmergence()) {break;};
         scenario_pool();
         break;
     case 20:
-        testEmergence();
+        if (testEmergence()) {break;};
         scenario_floor();
         break;
     case 30:
-        testEmergence();
+        if (testEmergence()) {break;};
         scenario_hot_paralell();
         break;
     case 40:
-        testEmergence();
+        if (testEmergence()) {break;};
         scenario_hot_series();
         break;
     case 50:
-        testEmergence();
-        void scenario_cold_paralell();
+        if (testEmergence()) {break;};
+        scenario_cold_paralell();
         break;
     case 60:
-        testEmergence();
+        if (testEmergence()) {break;};
         scenario_cold_series();
         break;   
     default:
@@ -149,3 +177,4 @@ void updateScenario(int desiredState){
     }
 
 }
+

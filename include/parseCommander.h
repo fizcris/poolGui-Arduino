@@ -147,40 +147,40 @@ void parseSerialCommand(){
                             case CMD_STATE_STOP:
                             {
                                 serialWD.reset();
-                                scenario_STOP();                                
+                                updateScenario(00);                               
                             } break;
 
                             case CMD_STATE_POOL:
                             {
                                  serialWD.reset();
-                                 scenario_pool();                                
+                                 updateScenario(10);                                
                             } break;
 
                             case CMD_STATE_FLOOR:
                             {
                                 serialWD.reset();
-                                scenario_floor();
+                                updateScenario(20); 
                             } break; 
 
                             case CMD_STATE_HOT_SERIES:
                             {   
                                 serialWD.reset();
-                                scenario_hot_series();
+                                updateScenario(30); 
                             } break; 
                             case CMD_STATE_HOT_PARALELL:
                             {   
                                 serialWD.reset();
-                                scenario_hot_paralell();
+                                updateScenario(40); 
                             } break; 
                             case CMD_STATE_COLD_SERIES:
                             {
                                 serialWD.reset();
-                                scenario_cold_series();
+                                updateScenario(50); 
                             } break; 
                             case CMD_STATE_COLD_PARALELL:
                             {
                                 serialWD.reset();
-                                scenario_cold_paralell();
+                                updateScenario(60); 
                             } break; 
                             case CMD_TEMP_POOL:
                             {
