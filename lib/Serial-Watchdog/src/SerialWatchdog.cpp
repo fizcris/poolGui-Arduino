@@ -51,7 +51,7 @@ void Serial_watchdog::updateAndTest()
 void Serial_watchdog::onWDHard()
 {
     wdt_enable(WDTO_15MS);
-    Serial3.println("onWDHard!");
+    Serial.println("onWDHard!");
 }
 
 void Serial_watchdog::onWDSoft()

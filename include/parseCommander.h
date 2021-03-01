@@ -59,15 +59,15 @@
 /*************************************************************************************************************************************************/
 void parseSerialCommand(){
 
-    if(Serial.available() > 0)
+    if(Serial3.available() > 0)
     {
-        byte receivedByte = (byte)Serial.read();
+        byte receivedByte = (byte)Serial3.read();
 
         //Serial.println(receivedByte);
         if(receivedByte == FRAME_ESCAPE_CHAR)
         {
             g_xorValue = FRAME_XOR_CHAR;
-            //Serial3.println("FRAME_ESCAPE_CHAR");
+            //Serial.println("FRAME_ESCAPE_CHAR");
         } else
         {
             receivedByte ^= g_xorValue;
@@ -78,10 +78,10 @@ void parseSerialCommand(){
             {
                 case RCV_ST_IDLE:
                 {
-                    //Serial3.println("RCV_ST_IDLE");
+                    //Serial.println("RCV_ST_IDLE");
                     if(receivedByte == FRAME_START)
                     {   
-                        //Serial3.println("FRAME_START");
+                        //Serial.println("FRAME_START");
                         g_BufferIndex = 0;
                         g_InputBuffer[g_BufferIndex++] = receivedByte;
                         g_Checksum = receivedByte;
@@ -91,7 +91,7 @@ void parseSerialCommand(){
 
                 case RCV_ST_CMD:
                 {
-                    //Serial3.println("RCV_ST_CMD");
+                    //Serial.println("RCV_ST_CMD");
                     g_InputBuffer[g_BufferIndex++] = receivedByte;
                     g_Checksum += receivedByte;
                     g_ReceiverStatus = RCV_ST_DATA_LENGTH;
@@ -99,7 +99,7 @@ void parseSerialCommand(){
     
                 case RCV_ST_DATA_LENGTH:
                 {
-                    //Serial3.println("RCV_ST_DATA_LENGTH");
+                    //Serial.println("RCV_ST_DATA_LENGTH");
                     g_DataLength = receivedByte;
                     if(g_DataLength > 0)
                     {   
@@ -118,7 +118,7 @@ void parseSerialCommand(){
     
                 case RCV_ST_DATA:
                 {
-                    //Serial3.println("RCV_ST_DATA");
+                    //Serial.println("RCV_ST_DATA");
                     g_InputBuffer[g_BufferIndex++] = receivedByte;
                     g_Checksum += receivedByte;
                     if(--g_DataLength == 0)
@@ -127,7 +127,7 @@ void parseSerialCommand(){
     
                 case RCV_ST_CHECKSUM:
                 {
-                    //Serial3.println("RCV_ST_CHECKSUM");
+                    //Serial.println("RCV_ST_CHECKSUM");
                     if(receivedByte == g_Checksum)
                     {   
                         g_ReceiverStatus = RCV_ST_IDLE;
@@ -140,7 +140,7 @@ void parseSerialCommand(){
                             
                         // }
                         // Serial.println("");
-                        //Serial3.println("CMD");
+                        //Serial.println("CMD");
                         
                         switch(g_InputBuffer[INDEX_CMD])
                         {

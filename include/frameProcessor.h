@@ -137,7 +137,7 @@ void SendFrame(byte* pFrameBuff, int length)
             g_OutBuffer[dataToSend++] = pFrameBuff[i];
     }
     
-    Serial.write(g_OutBuffer, dataToSend);
+    Serial3.write(g_OutBuffer, dataToSend);
 }
 /*************************************************************************************************************************************************/
 //NAME:         SendFrameByte
