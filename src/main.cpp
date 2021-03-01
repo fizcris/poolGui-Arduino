@@ -18,12 +18,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            Test vars
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int desiredState = 0;
+
 //Memory initialization
 Sensor *sensor1;
 Sensor *sensor2;
 Sensor *sensor3;
 Sensor *sensor4;
+Sensor *sensor5;
+Sensor *sensor6;
 Sensor *sensor9;
 Sensor *sensor10;
 // TODO test and impelement
@@ -48,10 +50,12 @@ Serial_watchdog serialWD(WDTimeHard, WDTimeSoft);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            Global Variables
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int desiredTempPool = 150;
-int desiredTempFloor = 150;
+int desiredTempPool = 150;      // Temp degrees * 10 
+int desiredTempFloor = 150;     // Temp degrees * 10 
+int hysteresisTemp = 20;        // Temp degrees * 10 
+int desiredState = 00;           // [00 -60] Current State
 noDelay periodicUpdate(1000);   //MCU -> RPI    Periodic update timmer
-noDelay criticalUpdate(100);   //MCU -> RPI    Periodic update timmer
+noDelay criticalUpdate(100);    //MCU -> RPI    Periodic update timmer
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                             Includes dependent on global vars
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,8 +82,8 @@ void setup()
   sensor2 = new Sensor(23, "st_b", "DS18B20");
   sensor3 = new Sensor(24, "st_c", "DS18B20");
   sensor4 = new Sensor(25, "st_d", "DS18B20");
-  //sensor5 = new Sensor(26, "st_e", "DS18B20");
-  //sensor6 = new Sensor(27, "st_f", "DS18B20");
+  sensor5 = new Sensor(26, "st_e", "DS18B20");
+  sensor6 = new Sensor(27, "st_f", "DS18B20");
   //sensor7 = new Sensor(28, "st_g", "DS18B20");
 
   //sensor8 = new Sensor(29, "sa_a", "DS18B20");
@@ -116,6 +120,8 @@ void loop()
     sensor2->read();
     sensor3->read();
     sensor4->read();
+    sensor5->read();
+    sensor6->read();
     //Read DHT22
     sensor9->read();
     //Read Pressure Sensor
@@ -127,16 +133,15 @@ void loop()
         delay(10);
         SendFrameWord(TEMP_FLOOR, sensor9->printValueIntx10());
         delay(10);
-        SendFrameWord(HG_ROOM, desiredState);
-        // SendFrameWord(HG_ROOM, sensor9->printValueIntx10(1));
+        SendFrameWord(HG_ROOM, sensor9->printValueIntx10(1));
         delay(10);
         SendFrameWord(TEMP_POOL_IMP, sensor3->printValueIntx10());
         delay(10);
         SendFrameWord(TEMP_FLOOR_IMP, sensor4->printValueIntx10());
         delay(10);
-        // SendFrameWord(TEMP_RETURN, random(100, 400));
-        // delay(10);
-        // SendFrameWord(TEMP_SERIES, random(100, 400));
+        SendFrameWord(TEMP_RETURN, sensor5->printValueIntx10());
+        delay(10);
+        SendFrameWord(TEMP_SERIES, sensor6->printValueIntx10());
         delay(10);
         SendFrameWord(PRESS_RETURN, sensor10->printValueIntx10());
         delay(10);
@@ -146,8 +151,8 @@ void loop()
         delay(10);
         SendFrameWord(DESIRED_TEMP_FLOOR,desiredTempFloor );
         delay(10);
-        SendFrameWord(HG_ROOM, desiredState);
-        delay(10);
+        //SendFrameWord(DESIRED_STATE, desiredState);
+        //delay(10);
     }
     serialWD.updateAndTest();
 }   

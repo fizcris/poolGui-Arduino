@@ -1,4 +1,4 @@
-bool emergence(){
+bool testEmergence(){
     return  0;
 };
 
@@ -28,6 +28,8 @@ void scenario_pool()
     actuator4->off();
     // Desactivo motor suelo
     actuator6->off();
+    // Control
+    // if (desiredTempPool > )
     // Activo motor piscina
     actuator5->on();
     // Activo motor intercambiador
@@ -113,3 +115,37 @@ void scenario_cold_series()
     // Activo motor suelo
     actuator6->on();
 };
+
+void updateScenario(int desiredState){
+    switch (desiredState)
+    {
+    case 10:
+        testEmergence();
+        scenario_pool();
+        break;
+    case 20:
+        testEmergence();
+        scenario_floor();
+        break;
+    case 30:
+        testEmergence();
+        scenario_hot_paralell();
+        break;
+    case 40:
+        testEmergence();
+        scenario_hot_series();
+        break;
+    case 50:
+        testEmergence();
+        void scenario_cold_paralell();
+        break;
+    case 60:
+        testEmergence();
+        scenario_cold_series();
+        break;   
+    default:
+        scenario_STOP();
+        break;
+    }
+
+}
