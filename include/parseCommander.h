@@ -14,10 +14,10 @@
 #define CMD_STATE_HOT_PARALELL   5   //   RPI -> ESP32       STATE HOT_PARALELL STATUS (ON, OFF)  
 #define CMD_STATE_COLD_SERIES    6   //   RPI -> ESP32       STATE COLD_SEERIES STATUS (ON, OFF)  
 #define CMD_STATE_COLD_PARALELL  7   //   RPI -> ESP32       STATE STATE_PARALELL STATUS (ON, OFF) 
-#define CMD_STATE_EMERGENCE      8   //  TODO RPI -> ESP32       STATE STATE_EMERGENCESTATUS (ON, OFF)  
+#define CMD_STATE_EMERGENCE      8   //   ESP32 -> RPI       STATE STATE_EMERGENCESTATUS (ON, OFF)  
 
-#define CMD_TEMP_POOL            9   //   RPI -> ESP32       STATE STATE_EMERGENCESTATUS (ON, OFF)
-#define CMD_TEMP_FLOOR           10   //  RPI -> ESP32      STATE STATE_EMERGENCESTATUS (ON, OFF)
+#define CMD_TEMP_POOL            9   //   RPI -> ESP32       Temp degrees * 10 
+#define CMD_TEMP_FLOOR           10   //  RPI -> ESP32       Temp degrees * 10 
 
 #define CMD_VK_1                 20  //   TODO RPI -> ESP32      VALVE NA (ON, OFF)
 #define CMD_VK_2                 21  //   TODO RPI -> ESP32       VALVE 3 WAY (ON, OFF)

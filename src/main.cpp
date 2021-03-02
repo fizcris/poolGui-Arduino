@@ -54,8 +54,9 @@ int desiredTempPool = 150;    // Temp degrees * 10
 int desiredTempFloor = 150;   // Temp degrees * 10
 int hysteresisTemp = 20;      // Temp degrees * 10
 int desiredState = 00;        // [00 -60] Current State
-int alarmHighTemp = 800;      // Temp degrees * 10  //any sensor
+int alarmHighTemp = 840;      // Temp degrees * 10  //any sensor
 int alarmHighTempImp = 450;   // Temp degrees * 10  //Pool imp sensor
+bool alarmState = false;
 noDelay periodicUpdate(1000); //MCU -> RPI    Periodic update timmer
 noDelay criticalUpdate(100);  //MCU -> RPI    Periodic update timmer
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,6 +156,10 @@ void loop()
         delay(10);
         SendFrameWord(DESIRED_STATE, desiredState);
         delay(10);
+        SendFrameWord(DESIRED_TEPM_POOL, desiredTempPool);
+        delay(10);
+        SendFrameWord(CMD_STATE_EMERGENCE, alarmState);
+        
     }
     serialWD.updateAndTest();
 }

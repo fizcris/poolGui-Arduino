@@ -33,6 +33,7 @@ void scenario_pool()
     if (_curentTempPoolImp > alarmHighTempImp) {
         actuator5->on();   // Motor piscina
         actuator7->off();   // Motor intercambiador
+        alarmState = true;
     } else {
     if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
         { 
@@ -87,6 +88,7 @@ void scenario_hot_series()
         actuator5->on();   // Motor piscina
         actuator7->off();   // Motor intercambiador
         actuator6->off();   // Motor suelo
+        alarmState = true;
     } else {
     if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
         { 
@@ -119,6 +121,7 @@ void scenario_hot_paralell()
     if (_curentTempPoolImp > alarmHighTempImp) {
         actuator5->on();   // Motor piscina
         actuator7->off();   // Motor intercambiador
+        alarmState = true;
     } else {
     if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
         { 
@@ -159,6 +162,7 @@ void scenario_cold_series()
         actuator5->on();   // Motor piscina
         actuator7->off();   // Motor intercambiador
         actuator6->off();   // Motor suelo
+        alarmState = true;
     } else {
     if (_curentTempFloor > (desiredTempFloor - hysteresisTemp/2) ) 
         { 
@@ -192,6 +196,7 @@ void scenario_cold_paralell()
         actuator5->on();   // Motor piscina
         actuator7->off();   // Motor intercambiador
         actuator6->off();   // Motor suelo
+        alarmState = true;        
     } else {
     if (_curentTempFloor > (desiredTempFloor - hysteresisTemp/2) ) 
         { 
@@ -213,18 +218,19 @@ void scenario_cold_paralell()
 
 bool testEmergence(){
     if(sensor1->printValueIntx10() > alarmHighTemp)
-    {scenario_STOP(); return  1;}
+    {scenario_STOP(); alarmState = true; return  1;}
     if(sensor2->printValueIntx10() > alarmHighTemp)
-    {scenario_STOP(); return  1;}
+    {scenario_STOP(); alarmState = true; return  1;}
     if(sensor3->printValueIntx10() > alarmHighTemp)
-    {scenario_STOP(); return  1;}
+    {scenario_STOP(); alarmState = true; return  1;}
     if(sensor4->printValueIntx10() > alarmHighTemp)
-    {scenario_STOP(); return  1;}
+    {scenario_STOP(); alarmState = true; return  1;}
     if(sensor5->printValueIntx10() > alarmHighTemp)
-    {scenario_STOP(); return  1;}
+    {scenario_STOP(); alarmState = true; return  1;}
     if(sensor6->printValueIntx10() > alarmHighTemp)
-    {scenario_STOP(); return  1;}
+    {scenario_STOP(); alarmState = true; return  1;}
     //NO alarms
+    alarmState =false;
     return  0;
 };
 
