@@ -8,6 +8,7 @@
 #include <Sensor.h>
 #include <Actuator.h>
 #include <SerialWatchdog.h>
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            TODO
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,25 +129,54 @@ void loop()
         sensor9->read();
         //Read Pressure Sensor
         sensor10->read();
-
-        SendFrameWord(TEMP_HEATER, sensor1->printValueIntx10());
-        delay(10);
-        SendFrameWord(TEMP_POOL, sensor2->printValueIntx10());
-        delay(10);
-        SendFrameWord(TEMP_FLOOR, sensor9->printValueIntx10());
-        delay(10);
-        SendFrameWord(HG_ROOM, sensor9->printValueIntx10(1));
-        delay(10);
-        SendFrameWord(TEMP_POOL_IMP, sensor3->printValueIntx10());
-        delay(10);
-        SendFrameWord(TEMP_FLOOR_IMP, sensor4->printValueIntx10());
-        delay(10);
-        SendFrameWord(TEMP_RETURN, sensor5->printValueIntx10());
-        delay(10);
-        SendFrameWord(TEMP_SERIES, sensor6->printValueIntx10());
-        delay(10);
-        SendFrameWord(PRESS_RETURN, sensor10->printValueIntx10());
-        delay(10);
+        //Serial.println("***********");
+        if (sensor1->hasValueChanged()){
+            //Serial.println("TEMP_HEATER");
+            SendFrameWord(TEMP_HEATER, sensor1->lastRead);
+            delay(10);
+        }
+        if (sensor2->hasValueChanged()){
+            //Serial.println("TEMP_POOL");
+            SendFrameWord(TEMP_POOL, sensor2->lastRead);
+            delay(10);
+        }
+        if (sensor9->hasValueChanged()){
+            //Serial.println("TEMP_FLOOR");
+            SendFrameWord(TEMP_FLOOR, sensor9->lastRead);
+            delay(10);
+        }
+        if (sensor9->hasValueChanged(1)){
+            //Serial.println("HG_ROOM");
+            SendFrameWord(HG_ROOM, sensor9->printValueIntx10(1));
+            delay(10);
+        }
+        if (sensor3->hasValueChanged()){
+            //Serial.println("TEMP_POOL_IMP");
+            SendFrameWord(TEMP_POOL_IMP, sensor3->printValueIntx10());
+            delay(10);
+        }
+        if (sensor4->hasValueChanged()){
+            //Serial.println("TEMP_FLOOR_IMP");
+            SendFrameWord(TEMP_FLOOR_IMP, sensor4->printValueIntx10());
+            delay(10);
+        }
+        if (sensor5->hasValueChanged()){
+            //Serial.println("TEMP_RETURN");
+            SendFrameWord(TEMP_RETURN, sensor5->printValueIntx10());
+            delay(10);
+        }
+        if (sensor6->hasValueChanged()){
+            //Serial.println("TEMP_SERIES");
+            SendFrameWord(TEMP_SERIES, sensor6->printValueIntx10());
+            delay(10);
+        }
+        if (sensor10->hasValueChanged()){
+            //Serial.println("PRESS_RETURN");
+            SendFrameWord(PRESS_RETURN, sensor10->printValueIntx10());
+            delay(10);
+        }
+        //Serial.println("***********");
+        
     }
     if (criticalUpdate.update())
     {

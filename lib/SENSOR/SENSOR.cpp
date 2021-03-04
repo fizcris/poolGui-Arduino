@@ -96,5 +96,22 @@ String Sensor::print(int mode)
 int Sensor::printValueIntx10 (int mode) {
 
     return  (int) (printValue(mode) *10);
+}
 
+bool Sensor::hasValueChanged(int mode) {
+
+    if (mode == 0) {
+        
+        if (this->lastRead != this->printValueIntx10(0)) {
+            lastRead =  this->printValueIntx10(0);
+            return true;
+        }else{ return false;}
+    } else if (mode == 1) {
+        if (this->lastRead1 != this->printValueIntx10(1)) {
+            lastRead1 =  this->printValueIntx10(1);
+            return true;
+        }else{ return false;}
+    }  else{
+        return false;
+    }
 }

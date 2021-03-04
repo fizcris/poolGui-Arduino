@@ -14,6 +14,7 @@ private:
   byte pin;
   String name;
   String sensorType;
+  
   //DS18B20
   DallasTemperature *sensorid;
   OneWire *idBus;
@@ -28,10 +29,14 @@ private:
   DHT *dht;
 
 public:
+  int lastRead;
+  int lastRead1;
+  
   Sensor(byte pin, String name, String sensorType);
   void init();
   void read();
   float printValue(int mode=0);
   String print(int mode=0);
   int printValueIntx10 (int mode=0);
+  bool hasValueChanged(int mode=0);
 }; // don't forget the semicolon at the end of the class
