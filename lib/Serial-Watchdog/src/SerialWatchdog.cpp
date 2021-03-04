@@ -26,8 +26,7 @@ void Serial_watchdog::update()
 {
     this->currentTime = millis();
     this->elapsedTime = this->currentTime - this->startTime;
-    //Serial.print("Time since last sWD reset: ");
-    //Serial.println(this->elapsedTime/1000);
+    
 }
 
 void Serial_watchdog::test()
@@ -52,9 +51,13 @@ void Serial_watchdog::onWDHard()
 {
     wdt_enable(WDTO_15MS);
     Serial.println("onWDHard!");
+    Serial.print("Time since last sWD reset: ");
+    Serial.println(this->elapsedTime/1000);
 }
 
 void Serial_watchdog::onWDSoft()
 {
-    //Serial3.println("SerialWatchdog!");
+    Serial.println("SerialWatchdog!");
+    Serial.print("Time since last sWD reset: ");
+    Serial.println(this->elapsedTime/1000);
 }

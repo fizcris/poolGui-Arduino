@@ -2,7 +2,7 @@ void scenario_STOP()
 {
     desiredState = 0;
     //Enable outputs
-    actuator8->off(); 
+    actuator8->on(); //It goes the other way arround
     // //Valves
     actuator1->off();
     actuator2->off();
@@ -22,7 +22,7 @@ void scenario_pool()
     int _curentTempPool = sensor2->printValueIntx10();
     int _curentTempPoolImp = sensor3->printValueIntx10();
     //Enable outputs
-    actuator8->on();
+    actuator8->off(); //It goes the other way arround
     // //Valves
     actuator1->off(); //vk1
     actuator2->off(); //vk2
@@ -52,7 +52,7 @@ void scenario_floor()
     desiredState = 20; 
     int _curentTempFloor = sensor9->printValueIntx10();
     //Enable outputs
-    actuator8->on();
+    actuator8->off(); //It goes the other way arround
     // //Valves
     actuator1->on();    //vk1
     actuator2->off();   //vk2
@@ -77,7 +77,7 @@ void scenario_hot_series()
     int _curentTempPool = sensor2->printValueIntx10();
     int _curentTempPoolImp = sensor3->printValueIntx10();
     //Enable outputs
-    actuator8->on();
+    actuator8->off(); //It goes the other way arround
     // //Valves
     actuator1->off();
     actuator2->on();
@@ -111,7 +111,7 @@ void scenario_hot_paralell()
     int _curentTempPoolImp = sensor3->printValueIntx10();
     int _curentTempFloor = sensor9->printValueIntx10();
     //Enable outputs
-    actuator8->on();
+    actuator8->off(); //It goes the other way arround
     // //Valves
     actuator1->off();   //vk1
     actuator2->off();   //vk2
@@ -151,7 +151,7 @@ void scenario_cold_series()
     int _curentTempFloor = sensor9->printValueIntx10();
     int _curentTempPoolImp = sensor3->printValueIntx10();
     //Enable outputs
-    actuator8->on();
+    actuator8->off(); //It goes the other way arround
     //Valves
     actuator1->off();   //vk1
     actuator2->on();    //vk2
@@ -185,7 +185,7 @@ void scenario_cold_paralell()
     int _curentTempPoolImp = sensor3->printValueIntx10();
     int _curentTempFloor = sensor9->printValueIntx10();
     //Enable outputs
-    actuator8->on();
+    actuator8->off(); //It goes the other way arround
     // //Valves
     actuator1->off();
     actuator2->off();

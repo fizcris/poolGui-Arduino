@@ -43,8 +43,8 @@ Actuator *actuator8;
 //digipot
 //Actuator *actuator9;
 //WATCHDOG SERIAL
-unsigned long WDTimeHard = 5; //in secods (max: 4,294,967)
-unsigned long WDTimeSoft = 2; //in secods (max: 4,294,967)
+unsigned long WDTimeHard = 60; //in secods (max: 4,294,967)
+unsigned long WDTimeSoft = 59; //in secods (max: 4,294,967)
 Serial_watchdog serialWD(WDTimeHard, WDTimeSoft);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,9 +105,9 @@ void setup()
     //digipot
     //actuator9 = new Actuator(53, "digipot10k","digipot");
 
-    //Enable motors
+    //Deactivate motors
     scenario_STOP();
-    actuator8->on();
+    actuator8->on(); //It goes the other way arround
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            Loop
