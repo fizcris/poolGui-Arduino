@@ -156,10 +156,7 @@ void loop()
         delay(10);
         SendFrameWord(DESIRED_STATE, desiredState);
         delay(10);
-        SendFrameWord(DESIRED_TEPM_POOL, desiredTempPool);
-        delay(10);
         SendFrameWord(CMD_STATE_EMERGENCE, alarmState);
-        
     }
     serialWD.updateAndTest();
 }
