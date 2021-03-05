@@ -48,8 +48,7 @@
 
 #define DESIRED_TEPM_POOL        116  //   ESP32 -> RPI      Temp degrees * 10 
 #define DESIRED_TEMP_FLOOR       117  //   ESP32 -> RPI      Temp degrees * 10 
-#define DESIRED_STATE            118  //   ESP32 -> RPI      Desired state [1-7]
-
+#define DESIRED_STATE            118  //   ESP32 -> RPI      Desired state [1-7] 
 /*************************************************************************************************************************************************/
 //NAME:         parseSerialCommand
 //DESCRPTION:   Parse input command and execute action
@@ -73,7 +72,6 @@ void parseSerialCommand(){
             receivedByte ^= g_xorValue;
             g_xorValue = 0x00;
             
-
             switch(g_ReceiverStatus)
             {
                 case RCV_ST_IDLE:
@@ -101,6 +99,7 @@ void parseSerialCommand(){
                 {
                     //Serial.println("RCV_ST_DATA_LENGTH");
                     g_DataLength = receivedByte;
+                    g_DataLengthFixed = g_DataLength;
                     if(g_DataLength > 0)
                     {   
                         // if (g_DataLength>LENGTH_IN_DATA_BUFFER) {
@@ -127,8 +126,11 @@ void parseSerialCommand(){
     
                 case RCV_ST_CHECKSUM:
                 {
-                    //Serial.println("RCV_ST_CHECKSUM");
-                    if(receivedByte == g_Checksum)
+                    // Serial.println("******");
+                    // Serial.println(g_BufferIndex);
+                    // Serial.println(g_DataLengthFixed + FRAME_NUM_EXTRA_BYTES -1);
+                    // Serial.println("******");
+                    if(receivedByte == g_Checksum && g_BufferIndex == (g_DataLengthFixed + FRAME_NUM_EXTRA_BYTES -1))
                     {   
                         g_ReceiverStatus = RCV_ST_IDLE;
                         g_InputBuffer[g_BufferIndex++] = receivedByte;

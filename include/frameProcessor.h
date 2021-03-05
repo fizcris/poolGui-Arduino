@@ -35,6 +35,7 @@ byte g_ReceiverStatus = RCV_ST_IDLE;
 byte g_xorValue = 0x00;
 byte g_Checksum = 0;
 int  g_DataLength = 0;
+int  g_DataLengthFixed = 0;
 int  g_BufferIndex = 0;
 /*************************************************************************************************************************************************/
 //NAME:         CalculateChecksum
