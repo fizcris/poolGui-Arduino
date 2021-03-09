@@ -2,16 +2,17 @@
 
 Serial_watchdog::Serial_watchdog(unsigned long WDTimeHard)
 {
-    this->WDTimeHard = WDTimeHard * 1000;
-    this->WDTimeSoft = WDTimeHard * 1000;
-
+    unsigned long toSeconds = 1000;
+    this->WDTimeHard = WDTimeHard * toSeconds;
+    this->WDTimeSoft = WDTimeHard * toSeconds;
     reset();
 }
 
 Serial_watchdog::Serial_watchdog(unsigned long WDTimeHard, unsigned long WDTimeSoft)
 {
-    this->WDTimeHard = WDTimeHard * 1000;
-    this->WDTimeSoft = WDTimeSoft * 1000;
+    unsigned long toSeconds = 1000;
+    this->WDTimeHard = WDTimeHard * toSeconds;
+    this->WDTimeSoft = WDTimeSoft * toSeconds;
     reset();
 }
 
@@ -19,13 +20,21 @@ void Serial_watchdog::reset()
 {
     this->startTime = millis();
     this->currentTime = millis();
-    wdt_disable();
+    //wdt_disable();
 }
 
 void Serial_watchdog::update()
 {
     this->currentTime = millis();
-    this->elapsedTime = this->currentTime - this->startTime;
+    // Make sure that millis() has not been restarted
+
+    if (this->currentTime > this->startTime ){
+        this->elapsedTime = this->currentTime - this->startTime;
+    } else{
+        this->startTime = millis(); 
+        this->elapsedTime = 0;       
+    }
+    //Serial.println(this->elapsedTime/1000);
     
 }
 
@@ -49,15 +58,22 @@ void Serial_watchdog::updateAndTest()
 
 void Serial_watchdog::onWDHard()
 {
-    wdt_enable(WDTO_15MS);
+    
     Serial.println("onWDHard!");
-    Serial.print("Time since last sWD reset: ");
-    Serial.println(this->elapsedTime/1000);
+    Serial.println(this->elapsedTime);
+    Serial.println(this->startTime);
+    Serial.println(this->currentTime);
+    delay(50);
+    wdt_enable(WDTO_15MS);    
 }
 
 void Serial_watchdog::onWDSoft()
 {
     Serial.println("SerialWatchdog!");
-    Serial.print("Time since last sWD reset: ");
-    Serial.println(this->elapsedTime/1000);
+    //Serial.print("Time since last sWD reset [ms]: ");
+    //Serial.println(this->elapsedTime);
+    //Serial3.end();
+    Serial3.begin(9600);
+    delay(100);
+    
 }

@@ -42,16 +42,16 @@ Actuator *actuator8;
 //digipot
 //Actuator *actuator9;
 //WATCHDOG SERIAL
-unsigned long WDTimeHard = 60; //in secods (max: 4,294,967)
-unsigned long WDTimeSoft = 59; //in secods (max: 4,294,967)
+unsigned long WDTimeHard = 30; //in secods (max: 4,294,967)
+unsigned long WDTimeSoft = 5; //in secods (max: 4,294,967)
 Serial_watchdog serialWD(WDTimeHard, WDTimeSoft);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            Global Variables
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int desiredTempPool = 150;    // Temp degrees * 10
-int desiredTempFloor = 150;   // Temp degrees * 10
-int hysteresisTemp = 20;      // Temp degrees * 10
-int desiredState = 00;        // [00 -60] Current State
+int desiredTempPool = 150;    // Temp degrees * 10 [Initial]
+int desiredTempFloor = 150;   // Temp degrees * 10 [Initial]
+int hysteresisTemp = 20;      // Temp degrees * 10 [Initial]
+int desiredState = 00;        // [00 -60] Current State [Initial]
 int alarmHighTemp = 840;      // Temp degrees * 10  //any sensor
 int alarmHighTempImp = 450;   // Temp degrees * 10  //Pool imp sensor
 bool alarmState = false;
@@ -110,8 +110,9 @@ void setup()
 //                                            Loop
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop()
-{
-    parseSerialCommand();        //Read and parse incomin data
+{   
+    parseSerialCommand();        //Read and parse incoming data
+
     if (periodicUpdate.update()) //Checks to see if set time has past
     {
         // Update sensor values
