@@ -8,13 +8,13 @@
 #include <Sensor.h>
 #include <Actuator.h>
 #include <SerialWatchdog.h>
+#include <freemem.h>
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            TODO
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Change Serial readString for non blocking
 //Test and tune daqs (prop valves)
 //Test and tune digipot
-//Minimize coms by testing before sending duplicate data
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            Test vars
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,8 +28,8 @@ Sensor *sensor6;
 Sensor *sensor9;
 Sensor *sensor10;
 // TODO test and impelement
-const int PWMPin1 = 46; // Pin of the PWM for the DAC 1
-const int PWMPin2 = 44; // Pin of the PWM for the DAC 2
+//const int PWMPin1 = 46; // Pin of the PWM for the DAC 1
+//const int PWMPin2 = 44; // Pin of the PWM for the DAC 2
 //digital
 Actuator *actuator1;
 Actuator *actuator2;
@@ -41,24 +41,28 @@ Actuator *actuator7;
 Actuator *actuator8;
 //digipot
 //Actuator *actuator9;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                            Global Variables
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Placeholders
+int desiredTempPool = 150;    // Temp degrees * 10 [Initial]
+int desiredTempFloor = 150;   // Temp degrees * 10 [Initial]
+int desiredState = 00;        // [00 -60] Current State [Initial]
+//Control
+int hysteresisTemp = 20;      // Temp degrees * 10 [Initial] pm 1 deg
+//Alarms
+int alarmHighTemp = 840;      // Temp degrees * 10  //any sensor
+int alarmHighTempImp = 450;   // Temp degrees * 10  //Pool imp sensor
+bool alarmState = false;      //MCU -> RPI    Alarm state
+//Non blocking updates
+noDelay periodicUpdate(1000); //MCU -> RPI    Periodic update timmer in ms
+noDelay criticalUpdate(100);  //MCU -> RPI    Periodic update timme in ms
 //WATCHDOG SERIAL
 unsigned long WDTimeHard = 30; //in secods (max: 4,294,967)
 unsigned long WDTimeSoft = 5; //in secods (max: 4,294,967)
 Serial_watchdog serialWD(WDTimeHard, WDTimeSoft);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                            Global Variables
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int desiredTempPool = 150;    // Temp degrees * 10 [Initial]
-int desiredTempFloor = 150;   // Temp degrees * 10 [Initial]
-int hysteresisTemp = 20;      // Temp degrees * 10 [Initial]
-int desiredState = 00;        // [00 -60] Current State [Initial]
-int alarmHighTemp = 840;      // Temp degrees * 10  //any sensor
-int alarmHighTempImp = 450;   // Temp degrees * 10  //Pool imp sensor
-bool alarmState = false;
-noDelay periodicUpdate(1000); //MCU -> RPI    Periodic update timmer
-noDelay criticalUpdate(100);  //MCU -> RPI    Periodic update timmer
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                             Includes dependent on global vars
+//                                             Helper Global Functions 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include <scenarios.h>
 #include <parseCommander.h>
@@ -67,16 +71,18 @@ noDelay criticalUpdate(100);  //MCU -> RPI    Periodic update timmer
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void setup()
 {
-    //Debug
+    //PC
     Serial.begin(9600);
     delay(100);
+    Serial.println("Hi");
 
     //Rpi
     Serial3.begin(9600);
     delay(100);
 
-    pinMode(PWMPin1, OUTPUT); // Sets the pin as output
-    pinMode(PWMPin2, OUTPUT); // Sets the pin as output
+    //PWMout
+    //pinMode(PWMPin1, OUTPUT); // Sets the pin as output
+    //pinMode(PWMPin2, OUTPUT); // Sets the pin as output
 
     sensor1 = new Sensor(22, "st_a", "DS18B20");
     sensor2 = new Sensor(23, "st_b", "DS18B20");
@@ -99,23 +105,25 @@ void setup()
     actuator6 = new Actuator(47, "mFloor");
     actuator7 = new Actuator(48, "mHeatEx");
     actuator8 = new Actuator(49, "mENABLE");
-    //digipot
+    //Digipot
     //actuator9 = new Actuator(53, "digipot10k","digipot");
 
-    //Deactivate motors
+    //Deactivate motors at startup
     scenario_STOP();
-    actuator8->on(); //It goes the other way arround
+    actuator8->on(); //It goes the other way arround 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            Loop
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop()
 {   
+    //Serial.println("About to read serial");
     parseSerialCommand();        //Read and parse incoming data
 
     if (periodicUpdate.update()) //Checks to see if set time has past
     {
         // Update sensor values
+        //Serial.println("About to read sensors");
         sensor1->read();
         sensor2->read();
         sensor3->read();
@@ -130,60 +138,53 @@ void loop()
         if (sensor1->hasValueChanged()){
             //Serial.println("TEMP_HEATER");
             SendFrameWord(TEMP_HEATER, sensor1->lastRead);
-            delay(10);
         }
         if (sensor2->hasValueChanged()){
             //Serial.println("TEMP_POOL");
             SendFrameWord(TEMP_POOL, sensor2->lastRead);
-            delay(10);
         }
         if (sensor9->hasValueChanged()){
             //Serial.println("TEMP_FLOOR");
             SendFrameWord(TEMP_FLOOR, sensor9->lastRead);
-            delay(10);
         }
         if (sensor9->hasValueChanged(1)){
             //Serial.println("HG_ROOM");
             SendFrameWord(HG_ROOM, sensor9->printValueIntx10(1));
-            delay(10);
         }
         if (sensor3->hasValueChanged()){
             //Serial.println("TEMP_POOL_IMP");
             SendFrameWord(TEMP_POOL_IMP, sensor3->printValueIntx10());
-            delay(10);
         }
         if (sensor4->hasValueChanged()){
             //Serial.println("TEMP_FLOOR_IMP");
             SendFrameWord(TEMP_FLOOR_IMP, sensor4->printValueIntx10());
-            delay(10);
         }
         if (sensor5->hasValueChanged()){
             //Serial.println("TEMP_RETURN");
             SendFrameWord(TEMP_RETURN, sensor5->printValueIntx10());
-            delay(10);
         }
         if (sensor6->hasValueChanged()){
             //Serial.println("TEMP_SERIES");
             SendFrameWord(TEMP_SERIES, sensor6->printValueIntx10());
-            delay(10);
+
         }
         if (sensor10->hasValueChanged()){
             //Serial.println("PRESS_RETURN");
             SendFrameWord(PRESS_RETURN, sensor10->printValueIntx10());
-            delay(10);
+
         }
         //Serial.println("***********");
         
     }
     if (criticalUpdate.update())
     {
+        //Serial.println("Send criticals");
         SendFrameWord(DESIRED_TEPM_POOL, desiredTempPool);
-        delay(10);
         SendFrameWord(DESIRED_TEMP_FLOOR, desiredTempFloor);
-        delay(10);
         SendFrameWord(DESIRED_STATE, desiredState);
-        delay(10);
         SendFrameWord(CMD_STATE_EMERGENCE, alarmState);
+
     }
+    //Serial.println(freeMemory());
     serialWD.updateAndTest();
 }

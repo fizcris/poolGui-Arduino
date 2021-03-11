@@ -58,11 +58,13 @@
 /*************************************************************************************************************************************************/
 void parseSerialCommand(){
 
-    if(Serial3.available() > 0)
+    while(Serial3.available() > 0)
+    //Serial.println("Serial availiable");
     {
         byte receivedByte = (byte)Serial3.read();
 
-        //Serial.println(receivedByte);
+        //Serial.print(receivedByte, HEX);
+        //Serial.print("/");
         if(receivedByte == FRAME_ESCAPE_CHAR)
         {
             g_xorValue = FRAME_XOR_CHAR;
@@ -143,6 +145,8 @@ void parseSerialCommand(){
                         // }
                         // Serial.println("");
                         //Serial.println("CMD");
+                        
+                        //Serial.println("Read OK");
                         
                         switch(g_InputBuffer[INDEX_CMD])
                         {

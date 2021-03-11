@@ -138,7 +138,13 @@ void SendFrame(byte* pFrameBuff, int length)
             g_OutBuffer[dataToSend++] = pFrameBuff[i];
     }
     
-    Serial3.write(g_OutBuffer, dataToSend);
+    //Serial.println(Serial3.availableForWrite());
+    if (Serial3.availableForWrite() > dataToSend) {
+            Serial3.write(g_OutBuffer, dataToSend);
+            delay(20); //Prevent buffer overflow
+    } 
+
+    
 }
 /*************************************************************************************************************************************************/
 //NAME:         SendFrameByte

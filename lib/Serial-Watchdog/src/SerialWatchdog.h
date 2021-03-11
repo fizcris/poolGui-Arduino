@@ -8,7 +8,7 @@ class Serial_watchdog
 private:
     unsigned long WDTimeSoft; // Coutndown in seconds up to about 40 days
     unsigned long WDTimeHard; // Coutndown in seconds up to about 40 days
-    unsigned long startTime;
+    unsigned long startMillis;
     unsigned long currentTime;
     unsigned long elapsedTime;
 
