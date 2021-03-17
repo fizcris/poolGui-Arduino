@@ -57,10 +57,7 @@ bool alarmState = false;      //MCU -> RPI    Alarm state
 //Non blocking updates
 noDelay periodicUpdate(1000); //MCU -> RPI    Periodic update timmer in ms
 noDelay criticalUpdate(100);  //MCU -> RPI    Periodic update timme in ms
-//WATCHDOG SERIAL
-unsigned long WDTimeHard = 30; //in secods (max: 4,294,967)
-unsigned long WDTimeSoft = 5; //in secods (max: 4,294,967)
-Serial_watchdog serialWD(WDTimeHard, WDTimeSoft);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                             Helper Global Functions 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,5 +183,5 @@ void loop()
 
     }
     //Serial.println(freeMemory());
-    serialWD.updateAndTest();
+    SWDupdateAndTest();
 }

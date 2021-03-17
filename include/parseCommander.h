@@ -152,50 +152,50 @@ void parseSerialCommand(){
                         {
                             case CMD_STATE_STOP:
                             {
-                                serialWD.reset();
+                                SWDreset();
                                 updateScenario(00);                               
                             } break;
 
                             case CMD_STATE_POOL:
                             {
-                                 serialWD.reset();
+                                 SWDreset();
                                  updateScenario(10);                                
                             } break;
 
                             case CMD_STATE_FLOOR:
                             {
-                                serialWD.reset();
+                                SWDreset();
                                 updateScenario(20); 
                             } break; 
 
                             case CMD_STATE_HOT_SERIES:
                             {   
-                                serialWD.reset();
+                                SWDreset();
                                 updateScenario(30); 
                             } break; 
                             case CMD_STATE_HOT_PARALELL:
                             {   
-                                serialWD.reset();
+                                SWDreset();
                                 updateScenario(40); 
                             } break; 
                             case CMD_STATE_COLD_SERIES:
                             {
-                                serialWD.reset();
+                                SWDreset();
                                 updateScenario(50); 
                             } break; 
                             case CMD_STATE_COLD_PARALELL:
                             {
-                                serialWD.reset();
+                                SWDreset();
                                 updateScenario(60); 
                             } break; 
                             case CMD_TEMP_POOL:
                             {
-                                serialWD.reset();
+                                SWDreset();
                                 desiredTempPool =  GetDataWord(g_InputBuffer);
                             }break; 
                             case CMD_TEMP_FLOOR:
                             {
-                                serialWD.reset();
+                                SWDreset();
                                 desiredTempFloor = GetDataWord(g_InputBuffer);
                             }break; 
                         }

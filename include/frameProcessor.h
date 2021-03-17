@@ -6,8 +6,8 @@
 //                                             DEFINES
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #define LENGTH_INPUT_BUFFER      60
-#define LENGTH_OUT_DATA_BUFFER   50
-#define LENGTH_OUT_FRAME_BUFFER  60
+#define LENGTH_OUT_DATA_BUFFER   60
+#define LENGTH_OUT_FRAME_BUFFER  50
 
 #define FRAME_START              0x8A
 #define FRAME_ESCAPE_CHAR        0x8B
@@ -138,11 +138,14 @@ void SendFrame(byte* pFrameBuff, int length)
             g_OutBuffer[dataToSend++] = pFrameBuff[i];
     }
     
-    //Serial.println(Serial3.availableForWrite());
+    
     if (Serial3.availableForWrite() > dataToSend) {
             Serial3.write(g_OutBuffer, dataToSend);
             delay(20); //Prevent buffer overflow
-    } 
+            
+    } else {
+        Serial.println(Serial3.availableForWrite());
+    }
 
     
 }
