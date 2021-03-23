@@ -20,7 +20,7 @@ void onWDSoft(){
     Serial.println("SerialWatchdog!");
     Serial.print("Time since last sWD reset [ms]: ");
     Serial.println(elapsedTime);
-    delay(100);
+    //delay(100);
 };
 
 /*************************************************************************************************************************************************/
@@ -72,11 +72,12 @@ void SWDtest(){
     if (elapsedTime > WDTimeHard)
     {
         onWDHard();
-    }
-    if (elapsedTime > WDTimeSoft)
+    } else if (elapsedTime > WDTimeSoft)
     {
         onWDSoft();
-    }
+    } else {
+        // Do nothing
+    };
 };
 
 /*************************************************************************************************************************************************/

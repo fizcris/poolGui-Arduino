@@ -58,6 +58,9 @@
 /*************************************************************************************************************************************************/
 void parseSerialCommand(){
 
+    int dataBytesReceived = 0;
+    byte g_InputBuffer[LENGTH_INPUT_BUFFER];            // Incoming data buffer
+  
     while(Serial3.available() > 0)
     //Serial.println("Serial availiable");
     {
@@ -95,19 +98,17 @@ void parseSerialCommand(){
                     g_InputBuffer[g_BufferIndex++] = receivedByte;
                     g_Checksum += receivedByte;
                     g_ReceiverStatus = RCV_ST_DATA_LENGTH;
+                    dataBytesReceived = 0;
                 } break;
     
                 case RCV_ST_DATA_LENGTH:
                 {
                     //Serial.println("RCV_ST_DATA_LENGTH");
+
                     g_DataLength = receivedByte;
                     g_DataLengthFixed = g_DataLength;
-                    if(g_DataLength > 0)
+                    if(g_DataLength > 0 && g_DataLength <= LENGTH_MAX_IN_DATA_BUFFER)
                     {   
-                        // if (g_DataLength>LENGTH_IN_DATA_BUFFER) {
-                        //     g_ReceiverStatus = RCV_ST_IDLE; 
-                        //     break; 
-                        // }
                         g_InputBuffer[g_BufferIndex++] = receivedByte;
                         g_Checksum += receivedByte;
                         g_ReceiverStatus = RCV_ST_DATA;
@@ -120,6 +121,20 @@ void parseSerialCommand(){
                 case RCV_ST_DATA:
                 {
                     //Serial.println("RCV_ST_DATA");
+                    dataBytesReceived++;
+                    if (dataBytesReceived>LENGTH_MAX_IN_DATA_BUFFER) {
+                        Serial.println("Bytes discard");
+
+                        for(int i=0; i<sizeof(g_InputBuffer); i++){
+                            Serial.print(g_InputBuffer[i], HEX);
+                            Serial.print(", ");
+                        }
+
+                        g_BufferIndex = 0;           // Incoming data buffer
+                        memset (g_InputBuffer, 0, sizeof(g_InputBuffer));
+                        g_ReceiverStatus = RCV_ST_IDLE; 
+                        break; 
+                    }
                     g_InputBuffer[g_BufferIndex++] = receivedByte;
                     g_Checksum += receivedByte;
                     if(--g_DataLength == 0)
@@ -173,36 +188,42 @@ void parseSerialCommand(){
                                 SWDreset();
                                 updateScenario(30); 
                             } break; 
+
                             case CMD_STATE_HOT_PARALELL:
                             {   
                                 SWDreset();
                                 updateScenario(40); 
                             } break; 
+
                             case CMD_STATE_COLD_SERIES:
                             {
                                 SWDreset();
                                 updateScenario(50); 
                             } break; 
+
                             case CMD_STATE_COLD_PARALELL:
                             {
                                 SWDreset();
                                 updateScenario(60); 
                             } break; 
+
                             case CMD_TEMP_POOL:
                             {
                                 SWDreset();
                                 desiredTempPool =  GetDataWord(g_InputBuffer);
                             }break; 
+
                             case CMD_TEMP_FLOOR:
                             {
                                 SWDreset();
                                 desiredTempFloor = GetDataWord(g_InputBuffer);
                             }break; 
                         }
-                    } else {
-                        g_ReceiverStatus = RCV_ST_IDLE;
-                        break;
-                        }
+                    } else 
+                    {
+                    g_ReceiverStatus = RCV_ST_IDLE;
+                    break;
+                    }
                 } break;
             }
         }

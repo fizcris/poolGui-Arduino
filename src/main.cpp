@@ -171,7 +171,6 @@ void loop()
 
         }
         //Serial.println("***********");
-        
     }
     if (criticalUpdate.update())
     {
@@ -180,8 +179,9 @@ void loop()
         SendFrameWord(DESIRED_TEMP_FLOOR, desiredTempFloor);
         SendFrameWord(DESIRED_STATE, desiredState);
         SendFrameWord(CMD_STATE_EMERGENCE, alarmState);
-
     }
-    //Serial.println(freeMemory());
+    if (freeMemory() < 100){
+        Serial.println(freeMemory());
+    };
     SWDupdateAndTest();
 }
