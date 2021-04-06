@@ -124,7 +124,7 @@ void parseSerialCommand(){
                     dataBytesReceived++;
                     if (dataBytesReceived>LENGTH_MAX_IN_DATA_BUFFER) {
                         Serial.println("Bytes discard");
-
+                        //Print buffer to serial
                         for(int i=0; i<sizeof(g_InputBuffer); i++){
                             Serial.print(g_InputBuffer[i], HEX);
                             Serial.print(", ");
@@ -151,15 +151,6 @@ void parseSerialCommand(){
                     {   
                         g_ReceiverStatus = RCV_ST_IDLE;
                         g_InputBuffer[g_BufferIndex++] = receivedByte;
-                        // Print buffer serial PC
-                        // for(int i=0; i<sizeof(g_InputBuffer); i++){
-                            
-                        //     Serial.print(g_InputBuffer[i]);
-                        //     Serial.print(", ");
-                            
-                        // }
-                        // Serial.println("");
-                        //Serial.println("CMD");
                         
                         //Serial.println("Read OK");
                         
