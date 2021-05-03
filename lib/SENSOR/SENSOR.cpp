@@ -90,11 +90,11 @@ float Sensor::printValue(int mode)
     // Filtering and error handling
     if (lastRead > 0)
     {
-        Serial.println("******");
-        Serial.println(lastRead);
+        //Serial.println("******");
+        //Serial.println(lastRead);
         int avg = this->avgTemp->reading(lastRead*100);
         this->lastAvg = avg/100.0;
-        Serial.println(this->lastAvg);
+        //Serial.println(this->lastAvg);
         return this->lastAvg;
     }
     else
