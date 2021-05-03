@@ -84,7 +84,7 @@ float Sensor::printValue(int mode)
     }
     else
     {
-        return 0.0; //TODO implent error case
+        return 99.99; //TODO implent error case
     }
 
     // Filtering and error handling
@@ -99,7 +99,7 @@ float Sensor::printValue(int mode)
     }
     else
     {
-        return 0.0; //TODO implent error case
+        return 99.99; //TODO implent error case
     };
 }
 
