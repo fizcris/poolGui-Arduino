@@ -3,6 +3,8 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
+#include <movingAvg.h>                  // https://github.com/JChristensen/movingAvg
+
 #include <DHT.h>
 #include <DHT_U.h>
 
@@ -15,6 +17,9 @@ private:
   String name;
   String sensorType;
   
+  movingAvg *avgTemp;                  // define the moving average object
+  float lastAvg;
+
   //DS18B20
   DallasTemperature *sensorid;
   OneWire *idBus;
