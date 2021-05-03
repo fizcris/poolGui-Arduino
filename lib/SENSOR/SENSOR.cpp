@@ -71,14 +71,14 @@ float Sensor::printValue(int mode)
     {
         lastRead = sensorid->getTempCByIndex(0);
     }
-    if (this->sensorType == "DHT22")
+    else if (this->sensorType == "DHT22")
     {
         if (mode == 0)
             lastRead = this->temp;
         else
             return this->hum; //No need for filtering
     }
-    if (this->sensorType == "MBS3000")
+    else if (this->sensorType == "MBS3000")
     {
         lastRead = this->bar;
     }
@@ -90,7 +90,11 @@ float Sensor::printValue(int mode)
     // Filtering and error handling
     if (lastRead > 0)
     {
-        this->lastAvg = this->avgTemp->reading(lastRead);
+        Serial.println("******");
+        Serial.println(lastRead);
+        int avg = this->avgTemp->reading(lastRead*100);
+        this->lastAvg = avg/100.0;
+        Serial.println(this->lastAvg);
         return this->lastAvg;
     }
     else
