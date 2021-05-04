@@ -21,7 +21,7 @@ Sensor::Sensor(byte pin, String name, String sensorType)
 
 void Sensor::init()
 {
-    avgTemp = new movingAvg(10); // define the moving average object
+    avgTemp = new movingAvg(15); // define the moving average object and lenght
     avgTemp->begin();
 
     if (this->sensorType == "DS18B20")
@@ -65,41 +65,52 @@ void Sensor::read()
 
 float Sensor::printValue(int mode)
 {
-    float lastRead;
 
     if (this->sensorType == "DS18B20")
     {
-        lastRead = sensorid->getTempCByIndex(0);
+        this->lastValue = sensorid->getTempCByIndex(0);
     }
     else if (this->sensorType == "DHT22")
     {
         if (mode == 0)
-            lastRead = this->temp;
+            this->lastValue = this->temp;
         else
             return this->hum; //No need for filtering
     }
     else if (this->sensorType == "MBS3000")
     {
-        lastRead = this->bar;
+        this->lastValue = this->bar;
     }
     else
     {
-        return 99.99; //TODO implent error case
+        numberErrorReads++;
     }
 
     // Filtering and error handling
-    if (lastRead > 0)
+    if (this->lastValue >= 0.0 && this->lastValue < 80.0)
     {
         //Serial.println("******");
-        //Serial.println(lastRead);
-        int avg = this->avgTemp->reading(lastRead*100);
-        this->lastAvg = avg/100.0;
+        
+        int avg = this->avgTemp->reading(this->lastValue * 100);
+        this->lastAvg = avg / 100.0;
         //Serial.println(this->lastAvg);
+        this->numberErrorReads=0;
         return this->lastAvg;
     }
     else
     {
-        return 99.99; //TODO implent error case
+        Serial.print(this->name);
+        Serial.println(this->lastValue);
+        this->numberErrorReads++;
+        Serial.println(this->numberErrorReads);
+        if (this->numberErrorReads > this->maxNumberErrorReads)
+        {
+            return 99.99; 
+        }
+        else
+        {
+            return this->lastAvg;
+        }
     };
 }
 

@@ -17,22 +17,31 @@ private:
   String name;
   String sensorType;
   
+  //Filtering
   movingAvg *avgTemp;                  // define the moving average object
   float lastAvg;
+  float lastValue;
+
+  //Error handling
+  int numberErrorReads;
+  int maxNumberErrorReads=50;
 
   //DS18B20
   DallasTemperature *sensorid;
   OneWire *idBus;
   int timeToReadsensor;
   unsigned long previousMillis;
+  
   //Pressure sensor
   float bar;
   int offset; 
+  
   //DHT22
   float hum;  //Stores humidity value
   float temp; //Stores temperature value
   DHT *dht;
 
+  
 public:
   int lastRead;
   int lastRead1;
