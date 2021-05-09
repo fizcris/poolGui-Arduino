@@ -52,7 +52,7 @@ int desiredState = 00;        // [00 -60] Current State [Initial]
 int hysteresisTemp = 20;      // Temp degrees * 10 [Initial] pm 1 deg
 //Alarms
 int alarmHighTemp = 840;      // Temp degrees * 10  //any sensor
-int alarmHighTempImp = 450;   // Temp degrees * 10  //Pool imp sensor
+int alarmHighTempImp = 840;   // Temp degrees * 10  //Pool imp sensor
 bool alarmState = false;      //MCU -> RPI    Alarm state
 //Non blocking updates
 noDelay periodicUpdate(1000); //MCU -> RPI    Periodic update timmer in ms
