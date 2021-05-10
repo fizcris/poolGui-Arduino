@@ -49,8 +49,9 @@ int desiredTempPool = 150;    // Temp degrees * 10 [Initial]
 int desiredTempFloor = 150;   // Temp degrees * 10 [Initial]
 int desiredState = 00;        // [00 -60] Current State [Initial]
 //Control
-int hysteresisTempFloor = 20;      // Temp degrees * 10 [Initial] pm 1 deg
+int hysteresisTempFloor = 20;    // Temp degrees * 10 [Initial] pm 1 deg
 int hysteresisTempPool = 2;      // Temp degrees * 10 [Initial] pm 1 deg
+int safetyTempPoolPVC = 350 ;    // Temp degrees * 10 Limit temp to stop impulsion pump
 //Alarms
 int alarmHighTemp = 840;      // Temp degrees * 10  //any sensor
 int alarmHighTempImp = 840;   // Temp degrees * 10  //Pool imp sensor
