@@ -35,12 +35,12 @@ void scenario_pool()
         actuator7->off();   // Motor intercambiador
         alarmState = true;
     } else {
-    if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
+    if (_curentTempPool > (desiredTempPool + hysteresisTempPool/2) ) 
         { 
         actuator5->off();   // Motor piscina
         actuator7->off();   // Motor intercambiador
         }
-    if (_curentTempPool < (desiredTempPool - hysteresisTemp/2)) {
+    if (_curentTempPool < (desiredTempPool - hysteresisTempPool/2)) {
         actuator5->on(); // Motor piscina
         actuator7->on();// Motor intercambiador
     }
@@ -61,12 +61,12 @@ void scenario_floor()
     actuator5->off();   // Motor piscina
     actuator7->off();   // Motor intercambiador
 
-    if (_curentTempFloor > (desiredTempFloor + hysteresisTemp/2) ) 
+    if (_curentTempFloor > (desiredTempFloor + hysteresisTempFloor/2) ) 
         { 
         actuator6->off();   // Motor suelo
 
         }
-    if (_curentTempFloor < (desiredTempFloor - hysteresisTemp/2)) {
+    if (_curentTempFloor < (desiredTempFloor - hysteresisTempFloor/2)) {
         actuator6->on(); // Motor suelo
     }
 };
@@ -90,13 +90,13 @@ void scenario_hot_series()
         actuator6->off();   // Motor suelo
         alarmState = true;
     } else {
-    if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
+    if (_curentTempPool > (desiredTempPool + hysteresisTempPool/2) ) 
         { 
         actuator5->off();   // Motor piscina
         actuator7->off();   // Motor intercambiador
         actuator6->off();   // Motor suelo
         }
-    if (_curentTempPool < (desiredTempPool - hysteresisTemp/2)) {
+    if (_curentTempPool < (desiredTempPool - hysteresisTempPool/2)) {
         actuator5->on(); // Motor piscina
         actuator7->on();// Motor intercambiador
         actuator6->on();   // Motor suelo
@@ -123,24 +123,24 @@ void scenario_hot_paralell()
         actuator7->off();   // Motor intercambiador
         alarmState = true;
     } else {
-    if (_curentTempPool > (desiredTempPool + hysteresisTemp/2) ) 
+    if (_curentTempPool > (desiredTempPool + hysteresisTempPool/2) ) 
         { 
         actuator5->off();   // Motor piscina
         actuator7->off();   // Motor intercambiador
 
         }
-    if (_curentTempPool < (desiredTempPool - hysteresisTemp/2)) {
+    if (_curentTempPool < (desiredTempPool - hysteresisTempPool/2)) {
         actuator5->on(); // Motor piscina
         actuator7->on();// Motor intercambiador
     }
     }
     // Suelo
-    if (_curentTempFloor > (desiredTempFloor + hysteresisTemp/2) ) 
+    if (_curentTempFloor > (desiredTempFloor + hysteresisTempFloor/2) ) 
         { 
         actuator6->off();   // Motor suelo
 
         }
-    if (_curentTempFloor < (desiredTempFloor - hysteresisTemp/2)) {
+    if (_curentTempFloor < (desiredTempFloor - hysteresisTempFloor/2)) {
         actuator6->on(); // Motor suelo
     }
 };
@@ -164,14 +164,14 @@ void scenario_cold_series()
         actuator6->off();   // Motor suelo
         alarmState = true;
     } else {
-    if (_curentTempFloor > (desiredTempFloor + hysteresisTemp/2) ) 
+    if (_curentTempFloor > (desiredTempFloor + hysteresisTempFloor/2) ) 
         { 
         actuator5->on();   // Motor piscina
         actuator7->on();   // Motor intercambiador
         actuator6->on();   // Motor suelo
 
         }
-    if (_curentTempFloor < (desiredTempFloor - hysteresisTemp/2)) {
+    if (_curentTempFloor < (desiredTempFloor - hysteresisTempFloor/2)) {
         actuator5->off();   // Motor piscina
         actuator7->off();   // Motor intercambiador
         actuator6->off();   // Motor suelo
@@ -198,14 +198,14 @@ void scenario_cold_paralell()
         actuator6->off();   // Motor suelo
         alarmState = true;        
     } else {
-    if (_curentTempFloor > (desiredTempFloor + hysteresisTemp/2) ) 
+    if (_curentTempFloor > (desiredTempFloor + hysteresisTempFloor/2) ) 
         { 
         actuator5->on();   // Motor piscina
         actuator7->on();   // Motor intercambiador
         actuator6->on();   // Motor suelo
 
         }
-    if (_curentTempFloor < (desiredTempFloor - hysteresisTemp/2)) {
+    if (_curentTempFloor < (desiredTempFloor - hysteresisTempFloor/2)) {
         actuator5->off();   // Motor piscina
         actuator7->off();   // Motor intercambiador
         actuator6->off();   // Motor suelo
