@@ -45,23 +45,23 @@ Actuator *actuator8;
 //                                            Global Variables
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Placeholders
-int desiredTempPool = 150;    // Temp degrees * 10 [Initial]
-int desiredTempFloor = 150;   // Temp degrees * 10 [Initial]
-int desiredState = 00;        // [00 -60] Current State [Initial]
+int desiredTempPool = 150;  // Temp degrees * 10 [Initial]
+int desiredTempFloor = 150; // Temp degrees * 10 [Initial]
+int desiredState = 00;      // [00 -60] Current State [Initial]
 //Control
-int hysteresisTempFloor = 20;    // Temp degrees * 10 [Initial] pm 1 deg
-int hysteresisTempPool = 2;      // Temp degrees * 10 [Initial] pm 1 deg
-int safetyTempPoolPVC = 350 ;    // Temp degrees * 10 Limit temp to stop impulsion pump
+int hysteresisTempFloor = 20; // Temp degrees * 10 [Initial] pm 1 deg
+int hysteresisTempPool = 2;   // Temp degrees * 10 [Initial] pm 1 deg
+int safetyTempPoolPVC = 400;  // Temp degrees * 10 Limit temp to stop impulsion pump
 //Alarms
-int alarmHighTemp = 840;      // Temp degrees * 10  //any sensor
-int alarmHighTempImp = 840;   // Temp degrees * 10  //Pool imp sensor
-bool alarmState = false;      //MCU -> RPI    Alarm state
+int alarmHighTemp = 840;    // Temp degrees * 10  //any sensor
+int alarmHighTempImp = 840; // Temp degrees * 10  //Pool imp sensor
+bool alarmState = false;    //MCU -> RPI    Alarm state
 //Non blocking updates
 noDelay periodicUpdate(1000); //MCU -> RPI    Periodic update timmer in ms
 noDelay criticalUpdate(100);  //MCU -> RPI    Periodic update timme in ms
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                             Helper Global Functions 
+//                                             Helper Global Functions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include <scenarios.h>
 #include <parseCommander.h>
@@ -109,15 +109,15 @@ void setup()
 
     //Deactivate motors at startup
     scenario_STOP();
-    actuator8->on(); //It goes the other way arround 
+    actuator8->on(); //It goes the other way arround
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                            Loop
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void loop()
-{   
+{
     //Serial.println("About to read serial");
-    parseSerialCommand();        //Read and parse incoming data
+    parseSerialCommand(); //Read and parse incoming data
 
     if (periodicUpdate.update()) //Checks to see if set time has past
     {
@@ -134,43 +134,50 @@ void loop()
         //Read Pressure Sensor
         sensor10->read();
         //Serial.println("***********");
-        if (sensor1->hasValueChanged()){
+        if (sensor1->hasValueChanged())
+        {
             //Serial.println("TEMP_HEATER");
             SendFrameWord(TEMP_HEATER, sensor1->lastRead);
         }
-        if (sensor2->hasValueChanged()){
+        if (sensor2->hasValueChanged())
+        {
             //Serial.println("TEMP_POOL");
             SendFrameWord(TEMP_POOL, sensor2->lastRead);
         }
-        if (sensor9->hasValueChanged()){
+        if (sensor9->hasValueChanged())
+        {
             //Serial.println("TEMP_FLOOR");
             SendFrameWord(TEMP_FLOOR, sensor9->lastRead);
         }
-        if (sensor9->hasValueChanged(1)){
+        if (sensor9->hasValueChanged(1))
+        {
             //Serial.println("HG_ROOM");
             SendFrameWord(HG_ROOM, sensor9->printValueIntx10(1));
         }
-        if (sensor3->hasValueChanged()){
+        if (sensor3->hasValueChanged())
+        {
             //Serial.println("TEMP_POOL_IMP");
             SendFrameWord(TEMP_POOL_IMP, sensor3->printValueIntx10());
         }
-        if (sensor4->hasValueChanged()){
+        if (sensor4->hasValueChanged())
+        {
             //Serial.println("TEMP_FLOOR_IMP");
             SendFrameWord(TEMP_FLOOR_IMP, sensor4->printValueIntx10());
         }
-        if (sensor5->hasValueChanged()){
+        if (sensor5->hasValueChanged())
+        {
             //Serial.println("TEMP_RETURN");
             SendFrameWord(TEMP_RETURN, sensor5->printValueIntx10());
         }
-        if (sensor6->hasValueChanged()){
+        if (sensor6->hasValueChanged())
+        {
             //Serial.println("TEMP_SERIES");
             SendFrameWord(TEMP_SERIES, sensor6->printValueIntx10());
-
         }
-        if (sensor10->hasValueChanged()){
+        if (sensor10->hasValueChanged())
+        {
             //Serial.println("PRESS_RETURN");
             SendFrameWord(PRESS_RETURN, sensor10->printValueIntx10());
-
         }
         //Serial.println("***********");
     }
@@ -182,7 +189,8 @@ void loop()
         SendFrameWord(DESIRED_STATE, desiredState);
         SendFrameWord(CMD_STATE_EMERGENCE, alarmState);
     }
-    if (freeMemory() < 100){
+    if (freeMemory() < 100)
+    {
         Serial.println(freeMemory());
     };
     SWDupdateAndTest();
