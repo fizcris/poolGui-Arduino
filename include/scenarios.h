@@ -1,3 +1,10 @@
+/*************************************************************************************************************************************************/
+//NAME:         offImpPool
+//DESCRPTION:   Checks if temperuture is below threshold to stop pool pump
+//INPUT:        void
+//RETURN:       void
+//NOTE:         Set safetyTempPoolPVC activate stop threshold for pool pump
+/*************************************************************************************************************************************************/
 void offImpPool()
 {
     int _curentTempPoolImp = sensor3->printValueIntx10();
