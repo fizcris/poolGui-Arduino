@@ -4,6 +4,9 @@ This repository contains de C code required to control the sensors/actuators and
 
 Qt Gui repository [here](https://github.com/fizcris/poolGUI)
 
+## Targut Hardware:
+- Arduino Mega 2560
+
 ## Sensors:
 - Temperature sensor ds18b20
 - Temperature and humidity sensor DHT22
